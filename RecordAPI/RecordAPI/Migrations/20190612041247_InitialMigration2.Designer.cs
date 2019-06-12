@@ -10,7 +10,7 @@ using RecordAPI.Data;
 namespace RecordAPI.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20190612034818_InitialMigration2")]
+    [Migration("20190612041247_InitialMigration2")]
     partial class InitialMigration2
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -27,11 +27,15 @@ namespace RecordAPI.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int?>("RecordID");
+
                     b.Property<string>("Text");
 
                     b.Property<DateTime>("TimeStamp");
 
                     b.HasKey("ID");
+
+                    b.HasIndex("RecordID");
 
                     b.ToTable("Comments");
                 });
@@ -57,6 +61,13 @@ namespace RecordAPI.Migrations
                     b.HasIndex("CommentID");
 
                     b.ToTable("Records");
+                });
+
+            modelBuilder.Entity("RecordAPI.Models.Domain_Models.Comment", b =>
+                {
+                    b.HasOne("RecordAPI.Models.Domain_Models.Record", "Record")
+                        .WithMany()
+                        .HasForeignKey("RecordID");
                 });
 
             modelBuilder.Entity("RecordAPI.Models.Domain_Models.Record", b =>

@@ -15,6 +15,7 @@ namespace RecordAPI.Models.Domain_Models
         public string Owner { get; set; }
         public DateTime DateTimeCreated { get; set; }
         public DateTime LastTimeCreated { get; set; }
+        [ForeignKey("CommentID")]
         public Comment Comment { get; set; }
     }
 }

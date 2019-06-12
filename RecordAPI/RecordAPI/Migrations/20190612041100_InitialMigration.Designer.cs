@@ -10,7 +10,7 @@ using RecordAPI.Data;
 namespace RecordAPI.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20190612034138_InitialMigration")]
+    [Migration("20190612041100_InitialMigration")]
     partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -27,9 +27,17 @@ namespace RecordAPI.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int?>("RecordID");
+
+                    b.Property<string>("Text");
+
                     b.Property<DateTime>("TimeStamp");
 
                     b.HasKey("ID");
+
+                    b.HasIndex("RecordID")
+                        .IsUnique()
+                        .HasFilter("[RecordID] IS NOT NULL");
 
                     b.ToTable("Comments");
                 });
@@ -39,8 +47,6 @@ namespace RecordAPI.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int?>("CommentID");
 
                     b.Property<DateTime>("DateTimeCreated");
 
@@ -52,16 +58,14 @@ namespace RecordAPI.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CommentID");
-
                     b.ToTable("Records");
                 });
 
-            modelBuilder.Entity("RecordAPI.Models.Domain_Models.Record", b =>
+            modelBuilder.Entity("RecordAPI.Models.Domain_Models.Comment", b =>
                 {
-                    b.HasOne("RecordAPI.Models.Domain_Models.Comment", "Comment")
-                        .WithMany()
-                        .HasForeignKey("CommentID");
+                    b.HasOne("RecordAPI.Models.Domain_Models.Record", "Record")
+                        .WithOne("Comment")
+                        .HasForeignKey("RecordAPI.Models.Domain_Models.Comment", "RecordID");
                 });
 #pragma warning restore 612, 618
         }
