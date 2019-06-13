@@ -17,6 +17,16 @@ namespace RecordAPI.Services
             _context = context;
         }
 
+        public async void CreateRecord(Record record)
+        {
+            try
+            {
+                await _context.AddAsync(record);
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception ex) {}    
+        }
+
         public async Task<IEnumerable<Record>> GetAllRecordsAscending()
         {
             return await _context.Records
@@ -36,6 +46,13 @@ namespace RecordAPI.Services
             return await _context.Records
                 .Include(record => record.Comment)
                 .FirstOrDefaultAsync(record => record.Comment.ID == id);
+        }
+
+        public async Task<IEnumerable<Record>> GetRecordsByOwner(string owner)
+        {
+            return await _context.Records
+                .Include(record => record.Comment)
+                .Where(record => record.Owner == owner).ToListAsync();
         }
     }
 }

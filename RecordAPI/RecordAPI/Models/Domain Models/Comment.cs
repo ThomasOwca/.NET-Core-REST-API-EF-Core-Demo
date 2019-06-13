@@ -13,8 +13,5 @@ namespace RecordAPI.Models.Domain_Models
         public int ID { get; set; }
         public DateTime TimeStamp { get; set; }
         public string Text { get; set; }
-
-        [ForeignKey("RecordID")]
-        public Record Record { get; set; }
     }
 }

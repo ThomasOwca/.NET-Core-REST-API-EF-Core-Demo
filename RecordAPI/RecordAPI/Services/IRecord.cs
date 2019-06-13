@@ -11,5 +11,7 @@ namespace RecordAPI.Services
         Task<Record> GetRecordById(int id);
         Task<IEnumerable<Record>> GetAllRecordsAscending();
         Task<IEnumerable<Record>> GetAllRecordsDescending();
+        Task<IEnumerable<Record>> GetRecordsByOwner(string owner);
+        void CreateRecord(Record record);
     }
 }

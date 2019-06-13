@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RecordAPI.Data;
 
 namespace RecordAPI.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190613021317_InitialMigration3")]
+    partial class InitialMigration3
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -25,11 +27,15 @@ namespace RecordAPI.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int?>("RecordID");
+
                     b.Property<string>("Text");
 
                     b.Property<DateTime>("TimeStamp");
 
                     b.HasKey("ID");
+
+                    b.HasIndex("RecordID");
 
                     b.ToTable("Comments");
                 });
@@ -55,6 +61,13 @@ namespace RecordAPI.Migrations
                     b.HasIndex("CommentId");
 
                     b.ToTable("Records");
+                });
+
+            modelBuilder.Entity("RecordAPI.Models.Domain_Models.Comment", b =>
+                {
+                    b.HasOne("RecordAPI.Models.Domain_Models.Record", "Record")
+                        .WithMany()
+                        .HasForeignKey("RecordID");
                 });
 
             modelBuilder.Entity("RecordAPI.Models.Domain_Models.Record", b =>

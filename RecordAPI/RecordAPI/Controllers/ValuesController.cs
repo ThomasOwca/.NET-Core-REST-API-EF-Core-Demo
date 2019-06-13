@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using RecordAPI.Models.Domain_Models;
+using RecordAPI.Models.View_Models;
 using RecordAPI.Services;
 
 namespace RecordAPI.Controllers
@@ -33,11 +34,33 @@ namespace RecordAPI.Controllers
             return await _service.GetAllRecordsDescending();
         }
 
-        // GET api/values/records/descending
+        // GET api/values/records/id
         [HttpGet("{id}")]
         public async Task<Record> Get(int id)
         {
             return await _service.GetRecordById(id);
+        }
+
+        [HttpPost("create")]
+        public IActionResult Create([FromBody] Record record)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest("What a bad request. Perhaps a validation error?");
+            else
+                _service.CreateRecord(record);
+                return Ok();
+        }
+
+        [HttpGet("owner")]
+        public async Task<IActionResult> GetByOwner([FromBody] User user)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest();
+            else
+            {
+                var data = await _service.GetRecordsByOwner(user.FirstName + " " + user.LastName);
+                return Ok(data);
+            }
         }
 
         // POST api/values
