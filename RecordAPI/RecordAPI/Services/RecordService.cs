@@ -22,7 +22,7 @@ namespace RecordAPI.Services
             try
             {
                 await _context.AddAsync(record);
-                await _context.SaveChangesAsync();
+                _context.SaveChanges();
             }
             catch (Exception ex) {}    
         }

@@ -9,13 +9,13 @@ using RecordAPI.Services;
 
 namespace RecordAPI.Controllers
 {
-    [Route("api/[controller]/records")]
+    [Route("api/[controller]")]
     [ApiController]
-    public class ValuesController : ControllerBase
+    public class RecordController : ControllerBase
     {
         private IRecord _service;
 
-        public ValuesController(IRecord service)
+        public RecordController(IRecord service)
         {
             _service = service;
         }
@@ -45,10 +45,15 @@ namespace RecordAPI.Controllers
         public IActionResult Create([FromBody] Record record)
         {
             if (!ModelState.IsValid)
+            {
                 return BadRequest("What a bad request. Perhaps a validation error?");
+            } 
             else
+            {
                 _service.CreateRecord(record);
                 return Ok();
+            }
+               
         }
 
         [HttpGet("owner")]
