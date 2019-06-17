@@ -45,9 +45,7 @@ namespace RecordAPI.Controllers
         public IActionResult Create([FromBody] Record record)
         {
             if (!ModelState.IsValid)
-            {
                 return BadRequest("What a bad request. Perhaps a validation error?");
-            } 
             else
             {
                 _service.CreateRecord(record);
