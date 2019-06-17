@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using RecordAPI.Models.Domain_Models;
 using RecordAPI.Models.View_Models;
@@ -41,11 +42,13 @@ namespace RecordAPI.Controllers
             return await _service.GetRecordById(id);
         }
 
+        [EnableCors("CorsPolicy")]
         [HttpPost("create")]
         public IActionResult Create([FromBody] Record record)
         {
             if (!ModelState.IsValid)
-                return BadRequest("What a bad request. Perhaps a validation error?");
+                //return BadRequest("What a bad request. Perhaps a validation error?");
+                return Ok();
             else
             {
                 _service.CreateRecord(record);
